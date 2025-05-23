@@ -1,6 +1,8 @@
 require('./database/connection');
 const express = require('express');
 const cors    = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./docs/swagger.json');
 
 const groupRoutes = require('./routes/groupRoutes');
 const performanceRoutes = require('./routes/performanceRoutes');
@@ -13,6 +15,7 @@ app.use(express.json());
 // Routes
 app.use('/api/groups', groupRoutes);
 app.use('/api/performances', require('./routes/performanceRoutes'));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Global error handler
 app.use((err, req, res, next) => {

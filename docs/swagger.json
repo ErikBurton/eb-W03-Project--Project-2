@@ -1,0 +1,284 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Concert Hall API",
+    "version": "1.0.0",
+    "description": "CRUD operations for Groups and Performances"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Local development server"
+    }
+  ],
+  "paths": {
+    "/api/groups": {
+      "get": {
+        "summary": "List all groups",
+        "responses": {
+          "200": {
+            "description": "An array of Group objects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Group" }
+                }
+              }
+            }
+          },
+          "500": { "description": "Server error" }
+        }
+      },
+      "post": {
+        "summary": "Create a new group",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/GroupInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created Group",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Group" }
+              }
+            }
+          },
+          "400": { "description": "Validation error" },
+          "500": { "description": "Server error" }
+        }
+      }
+    },
+    "/api/groups/{id}": {
+      "parameters": [
+        { "$ref": "#/components/parameters/IdParam" }
+      ],
+      "get": {
+        "summary": "Get a group by ID",
+        "responses": {
+          "200": {
+            "description": "A single Group object",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Group" }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Group not found" },
+          "500": { "description": "Server error" }
+        }
+      },
+      "put": {
+        "summary": "Update a group by ID",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/GroupInput" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated Group",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Group" }
+              }
+            }
+          },
+          "400": { "description": "Validation error" },
+          "404": { "description": "Group not found" },
+          "500": { "description": "Server error" }
+        }
+      },
+      "delete": {
+        "summary": "Delete a group by ID",
+        "responses": {
+          "204": { "description": "No Content" },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Group not found" },
+          "500": { "description": "Server error" }
+        }
+      }
+    },
+    "/api/performances": {
+      "get": {
+        "summary": "List all performances",
+        "responses": {
+          "200": {
+            "description": "An array of Performance objects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Performance" }
+                }
+              }
+            }
+          },
+          "500": { "description": "Server error" }
+        }
+      },
+      "post": {
+        "summary": "Create a new performance",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PerformanceInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created Performance",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Performance" }
+              }
+            }
+          },
+          "400": { "description": "Validation error" },
+          "500": { "description": "Server error" }
+        }
+      }
+    },
+    "/api/performances/{id}": {
+      "parameters": [
+        { "$ref": "#/components/parameters/IdParam" }
+      ],
+      "get": {
+        "summary": "Get a performance by ID",
+        "responses": {
+          "200": {
+            "description": "A single Performance object",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Performance" }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Performance not found" },
+          "500": { "description": "Server error" }
+        }
+      },
+      "put": {
+        "summary": "Update a performance by ID",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PerformanceInput" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated Performance",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Performance" }
+              }
+            }
+          },
+          "400": { "description": "Validation error" },
+          "404": { "description": "Performance not found" },
+          "500": { "description": "Server error" }
+        }
+      },
+      "delete": {
+        "summary": "Delete a performance by ID",
+        "responses": {
+          "204": { "description": "No Content" },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Performance not found" },
+          "500": { "description": "Server error" }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "IdParam": {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "description": "MongoDB ObjectId",
+        "schema": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{24}$"
+        }
+      }
+    },
+    "schemas": {
+      "Group": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string", "readOnly": true },
+          "name": { "type": "string" },
+          "members": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "genre": { "type": "string" },
+          "costToPerform": { "type": "number" },
+          "originCity": { "type": "string" },
+          "activeSince": { "type": "string", "format": "date" },
+          "website": { "type": "string", "format": "uri" },
+          "albumsReleased": { "type": "integer" },
+          "createdAt": { "type": "string", "format": "date-time", "readOnly": true },
+          "updatedAt": { "type": "string", "format": "date-time", "readOnly": true }
+        }
+      },
+      "GroupInput": {
+        "type": "object",
+        "required": ["name", "members", "genre", "costToPerform"],
+        "properties": {
+          "name": { "type": "string" },
+          "members": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "genre": { "type": "string" },
+          "costToPerform": { "type": "number" },
+          "originCity": { "type": "string" },
+          "activeSince": { "type": "string", "format": "date" },
+          "website": { "type": "string", "format": "uri" },
+          "albumsReleased": { "type": "integer" }
+        }
+      },
+      "Performance": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string", "readOnly": true },
+          "group": { "type": "string" },
+          "date": { "type": "string", "format": "date-time" },
+          "venue": { "type": "string" },
+          "ticketsSold": { "type": "integer" },
+          "revenue": { "type": "number" },
+          "createdAt": { "type": "string", "format": "date-time", "readOnly": true },
+          "updatedAt": { "type": "string", "format": "date-time", "readOnly": true }
+        }
+      },
+      "PerformanceInput": {
+        "type": "object",
+        "required": ["group", "date", "venue", "ticketsSold", "revenue"],
+        "properties": {
+          "group": { "type": "string" },
+          "date": { "type": "string", "format": "date-time" },
+          "venue": { "type": "string" },
+          "ticketsSold": { "type": "integer" },
+          "revenue": { "type": "number" }
+        }
+      }
+    }
+  }
+}
