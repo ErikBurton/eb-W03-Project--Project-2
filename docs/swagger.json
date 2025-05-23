@@ -223,7 +223,7 @@
         "type": "object",
         "properties": {
           "_id": { "type": "string", "readOnly": true },
-          "name": { "type": "string" },
+          "name": { "type": "array" },
           "members": {
             "type": "array",
             "items": { "type": "string" }
