@@ -15,10 +15,10 @@ router.post(
   ctrl.createGroup
 );
 
-// Read all
+// GET all
 router.get('/', ctrl.getAllGroups);
 
-// Read one
+// GET one
 router.get(
   '/:id',
   [ param('id').isMongoId() ],

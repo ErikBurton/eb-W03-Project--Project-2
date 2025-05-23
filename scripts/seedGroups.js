@@ -45,7 +45,7 @@ async function seed() {
     }
   ];
 
-  // Insert them
+  // Insert 
   await Group.insertMany(groups);
   console.log(`Inserted ${groups.length} groups`);
 

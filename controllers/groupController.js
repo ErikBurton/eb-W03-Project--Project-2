@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator');
 const Group = require('../models/Group');
 
-// helper to send 400 on validation errors
+// Helper to send 400 on validation errors
 function checkValidation(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
