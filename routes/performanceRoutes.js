@@ -4,6 +4,7 @@ const ctrl = require('../controllers/performanceController');
 const router  = express.Router();
 const Performance = require('../models/Performance');
 
+// Data Validation on all required fields
 router.post(
   '/',
   [
@@ -16,14 +17,17 @@ router.post(
   ctrl.createPerformance
 );
 
+// GET all (no validation)
 router.get('/', ctrl.getAllPerformances);
 
+// GET one by ID (validate param)
 router.get(
   '/:id',
   [param('id').isMongoId()],
   ctrl.getPerformanceById
 );
 
+// Validation for optional updates
 router.put(
   '/:id',
   [

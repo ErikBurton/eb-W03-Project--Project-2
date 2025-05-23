@@ -5,17 +5,20 @@ const Group = require('../models/Group');
 function checkValidation(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    // Error Handling: respond with HTTP 400 and the array of validation errors
     return res.status(400).json({ errors: errors.array() });
   }
 }
 
 // CREATE
 exports.createGroup = async (req, res, next) => {
+  // Data Validation: if checkValidation sends a 400, otherwide stop here
   if (checkValidation(req, res)) return;
   try {
     const grp = await Group.create(req.body);
     res.status(201).json(grp);
   } catch (err) {
+    // Error Handling: uncaught errors bubble to the global handler: HTTP 500
     next(err);
   }
 };
@@ -35,7 +38,9 @@ exports.getGroupById = async (req, res, next) => {
   if (checkValidation(req, res)) return;
   try {
     const grp = await Group.findById(req.params.id).lean();
-    if (!grp) return res.status(404).json({ error: 'Not found' });
+    if (!grp) 
+      // Error Handling: not found: HTTP 404
+      return res.status(404).json({ error: 'Not found' });
     res.json(grp);
   } catch (err) {
     next(err);

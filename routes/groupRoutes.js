@@ -4,6 +4,7 @@ const router = express.Router();
 const ctrl = require('../controllers/groupController');
 
 // Create
+// Datavalidation: express-validator checks on the incoming body fields.
 router.post(
   '/',
   [
@@ -16,9 +17,11 @@ router.post(
 );
 
 // GET all
+// No validation needed for listing all
 router.get('/', ctrl.getAllGroups);
 
 // GET one
+// Datavalidation: id must be a valid MongoDB OjbectID
 router.get(
   '/:id',
   [ param('id').isMongoId() ],
@@ -26,6 +29,7 @@ router.get(
 );
 
 // Update
+// Data Validation: id must be valid and optional body fields must follow their rules
 router.put(
   '/:id',
   [
@@ -36,6 +40,7 @@ router.put(
 );
 
 // Delete
+// Data Validation: ensure id is well‐formed
 router.delete(
   '/:id',
   [ param('id').isMongoId() ],

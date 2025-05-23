@@ -1,9 +1,11 @@
 const { validationResult } = require('express-validator');
 const Performance = require('../models/Performance');
 
+// Validation helper identical to groups
 function checkValidation(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    // Error Handling: return HTTP 400 on validation failures
     return res.status(400).json({ errors: errors.array() });
   }
 }
