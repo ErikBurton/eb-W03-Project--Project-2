@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const GroupSchema = new mongoose.Schema({
     name:           { type: String, required: true},
@@ -11,4 +11,4 @@ const GroupSchema = new mongoose.Schema({
     albumsReleased:{ type: Number, default: 0 }
 },      { timestamp: true });
 
-module.exports = mongoose.model("Group", GroupSchema);
+module.exports = mongoose.model('Group', GroupSchema);
