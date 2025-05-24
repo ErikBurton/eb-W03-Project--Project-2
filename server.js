@@ -17,8 +17,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Routes
 app.use('/api/groups', groupRoutes);
 app.use('/api/performances', require('./routes/performanceRoutes'));
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 
 // Swagger UI
 // Determine the base URL for Swagger “servers” entry:
@@ -46,7 +44,3 @@ app.listen(PORT, () => {
   console.log(`Server running at ${API_BASE_URL}`);
 });
 
-// const PORT = process.env.PORT || 8080;
-// app.listen(PORT, () => 
-//   console.log(`Server running on http://localhost:${PORT}`)
-// );
