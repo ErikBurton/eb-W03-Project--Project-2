@@ -2,11 +2,12 @@ const express = require('express');
 const { body, param } = require('express-validator');
 const router = express.Router();
 const ctrl = require('../controllers/groupController');
+const ensureAuth = require('../ensureAuth');
 
 // Create
 // Datavalidation: express-validator checks on the incoming body fields.
 router.post(
-  '/',
+  '/', ensureAuth,
   [
     body('name').isString().notEmpty(),
     body('members').isArray({ min: 1 }),
@@ -31,7 +32,7 @@ router.get(
 // Update
 // Data Validation: id must be valid and optional body fields must follow their rules
 router.put(
-  '/:id',
+  '/:id', ensureAuth,
   [
     param('id').isMongoId(),
     body('costToPerform').optional().isFloat({ min: 0 }),
@@ -42,7 +43,7 @@ router.put(
 // Delete
 // Data Validation: ensure id is well‐formed
 router.delete(
-  '/:id',
+  '/:id', ensureAuth,
   [ param('id').isMongoId() ],
   ctrl.deleteGroup
 );

@@ -5,6 +5,9 @@ const path = require('path');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./docs/swagger.json');
 
+const session = require('express-session');
+const passport = require('./auth-github');
+
 const groupRoutes = require('./routes/groupRoutes');
 const performanceRoutes = require('./routes/performanceRoutes');
 
@@ -13,6 +16,41 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+  secret:     process.env.SESSION_SECRET,
+  resave:     false,
+  saveUninitialized: false,
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Auth routes
+// Redirect users to GitHub for login
+app.get('/auth/github',
+  passport.authenticate('github', { scope: [ 'user:email' ] })
+);
+
+// GitHub will redirect to this URL after approval
+app.get('/auth/github/callback',
+  passport.authenticate('github', { failureRedirect: '/' }),
+  (req, res) => {
+      res.redirect('/');
+  }
+);
+
+// Logout route
+app.get('/logout', (req, res, next) => {
+    req.logout(function(err) {
+    if (err) { return next(err); }
+    req.session.destroy(err => {
+      if (err) { return next(err); }
+      res.clearCookie('connect.sid');
+      res.redirect('/');
+    });
+  });
+});
 
 // Routes
 app.use('/api/groups', groupRoutes);

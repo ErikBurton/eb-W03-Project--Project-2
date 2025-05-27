@@ -11,6 +11,21 @@ h1 {
   color: #333;
 }
 
+nav button {
+  background-color: #0066cc;
+  border: none;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  margin: 0 0.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+nav button:hover {
+  background-color: #005bb5;
+}
+
 nav ul {
   list-style: none;
   padding: 0;

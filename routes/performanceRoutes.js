@@ -3,10 +3,11 @@ const { body, param } = require('express-validator');
 const ctrl = require('../controllers/performanceController');
 const router  = express.Router();
 const Performance = require('../models/Performance');
+const ensureAuth = require('../ensureAuth');
 
 // Data Validation on all required fields
 router.post(
-  '/',
+  '/', ensureAuth,
   [
     body('group').isMongoId(),
     body('date').isISO8601(),
@@ -29,7 +30,7 @@ router.get(
 
 // Validation for optional updates
 router.put(
-  '/:id',
+  '/:id', ensureAuth,
   [
     param('id').isMongoId(),
     body('group').optional().isMongoId(),
@@ -42,7 +43,7 @@ router.put(
 );
 
 router.delete(
-  '/:id',
+  '/:id', ensureAuth,
   [param('id').isMongoId()],
   ctrl.deletePerformance
 );

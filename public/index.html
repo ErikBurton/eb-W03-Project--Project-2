@@ -12,12 +12,34 @@
   <p>Manage your bands and their performances with simple REST endpoints.</p>
 
   <nav>
+  <button id="loginBtn">Log in with GitHub</button>
+  <ul>
+    <li><a href="/api-docs" target="_blank">API Documentation</a></li>
+    <li><a href="/api/groups">View All Groups</a></li>
+    <li><a href="/api/performances">View All Performances</a></li>
+  </ul>
+   <button id="logoutBtn">Log out</button>
+</nav>
+
+<script>
+  document.getElementById('loginBtn').onclick = () => {
+    window.location.href = '/auth/github';
+  };
+  document.getElementById('logoutBtn').onclick = () => {
+    window.location.href = '/logout';
+  };
+</script>
+  <!-- <p><li><a href="/auth/github">Log in with GitHub</a></li></p>
+
+  <nav>
     <ul>
       <li><a href="/api-docs" target="_blank">API Documentation</a></li>
       <li><a href="/api/groups">View All Groups</a></li>
       <li><a href="/api/performances">View All Performances</a></li>
     </ul>
   </nav>
+
+  <li><a href="/logout">Log out</a></li> -->
 
   <footer>
     <p>Source on <a href="https://github.com/ErikBurton/eb-W03-Project--Project-2.git" target="_blank">GitHub</a></p>
