@@ -15,4 +15,16 @@ passport.use(new GitHubStratgey ({
 }
 ));
 
+// Error handler on strategy
+passport._strategy('github')._oauth2.getOAuthAccessToken =
+function(code, params, callback) {
+  return passport._strategy('github')._oauth2.__proto__
+    .getOAuthAccessToken.call(this, code, params, (err, token, refresh, results) => {
+      if (err) {
+        console.error('GitHub token error:', err, results);
+      }
+      callback(err, token, refresh, results);
+    });
+};
+
 module.exports = passport;
