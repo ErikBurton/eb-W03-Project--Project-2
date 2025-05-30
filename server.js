@@ -47,7 +47,13 @@ app.get('/logout', (req, res, next) => {
     req.session.destroy(err => {
       if (err) { return next(err); }
       res.clearCookie('connect.sid');
-      res.redirect('/');
+      // logout of GitHub
+      const ghLogout = 'https://github.com/logout';
+      // return here to re-authenticate
+      const retrunTo = encodeURIComponent(
+        `${process.env.API_BASE_URL}/auth/github`
+      );
+      res.redirect(`${ghLogout}?return_to=${retrunTo}`);
     });
   });
 });
