@@ -12,32 +12,6 @@
     }
   ],
   "paths": {
-    "/auth/github": {
-      "get": {
-        "summary": "Redirect to GitHub for authentication",
-        "responses": {
-          "302": { "description": "Redirect to GitHub login" }
-        }
-      }
-    },
-    "/auth/github/callback": {
-      "get": {
-        "summary": "GitHub OAuth callback",
-        "responses": {
-          "302": { "description": "Redirect back to homepage on success" },
-          "401": { "description": "Authentication failed" }
-        }
-      }
-    },
-    "/logout": {
-      "get": {
-        "summary": "Log out and destroy session",
-        "responses": {
-          "302": { "description": "Redirect to homepage after logout" }
-        }
-      }
-    },
-
     "/api/groups": {
       "get": {
         "summary": "List all groups",
