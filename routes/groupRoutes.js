@@ -9,15 +9,20 @@ const ensureAuth = require('../ensureAuth');
 router.post(
   '/', ensureAuth,
   [
-    body('name').isString().notEmpty(),
-    body('members').isArray({ min: 1 }),
-    body('genre').isString().notEmpty(),
-    body('costToPerform')
-      .isFloat({ min: 0 })
-      .withMessage('Cost must be a number ≥ 0'),
+    body('name').isString().notEmpty().withMessage("Name is required and must be a non-empty string"),
+
+    body('members').isArray()
+    .withMessage("Members must be an array")
+    .bail() // stop if not an array
+    .custom(arr => Array.isArray(arr) && arr.length >=1)
+    .withMessage("Members array must contain at least one member"),
+
+
+    body('genre').isString().notEmpty().withMessage("Genre is required and must be a non-empty string"),
+  
     body('costToPerform')
       .isInt()
-      .withMessage('Cost must be an integer')    
+      .withMessage("Cost must be an integer ≥ 0")    
   ],
   ctrl.createGroup
 );
@@ -30,7 +35,7 @@ router.get('/', ctrl.getAllGroups);
 // Datavalidation: id must be a valid MongoDB OjbectID
 router.get(
   '/:id',
-  [ param('id').isMongoId() ],
+  [ param('id').isMongoId() ].withMessage("Invalid Groud ID format"),
   ctrl.getGroupById
 );
 
@@ -40,7 +45,7 @@ router.put(
   '/:id', ensureAuth,
   [
     param('id').isMongoId(),
-    body('costToPerform').optional().isFloat({ min: 0 }),
+    body('costToPerform').optional().isFloat({ min: 0 }).withMessage("Invalid Groud ID format"),
   ],
   ctrl.updateGroup
 );
@@ -49,7 +54,7 @@ router.put(
 // Data Validation: ensure id is well‐formed
 router.delete(
   '/:id', ensureAuth,
-  [ param('id').isMongoId() ],
+  [ param('id').isMongoId() ].withMessage("Invalid Groud ID format"),
   ctrl.deleteGroup
 );
 
