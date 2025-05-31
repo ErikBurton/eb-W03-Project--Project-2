@@ -1,0 +1,6 @@
+OVERVIEW OF AUTHENTICATION FLOW
+
+1.  Client → /auth/github → GitHub
+2.	GitHub → callback with code → /auth/github/callback
+3.	Server exchanges code for token → establishes session cookie
+4.	Cookie sent on subsequent protected requests

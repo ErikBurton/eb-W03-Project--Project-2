@@ -53,7 +53,6 @@ app.get('/logout', (req, res, next) => {
       const retrunTo = encodeURIComponent(
         `${process.env.API_BASE_URL}/auth/github`
       );
-      // res.redirect(`${ghLogout}?return_to=${retrunTo}`);
       res.redirect('/');
     });
   });

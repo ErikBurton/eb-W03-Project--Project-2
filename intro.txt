@@ -1,5 +1,6 @@
-CSE 341 - W03 Project: Project 2 Part 1 (CRUD Operations) 
+CSE 341 - W03 Project: Project 2 Part 2 GitHub OAuth with Passport & Express
 ** DEMO **
 
 Erik Burton
-May 23, 2025
+May 29, 2025
+

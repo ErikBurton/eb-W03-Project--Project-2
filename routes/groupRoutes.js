@@ -12,7 +12,12 @@ router.post(
     body('name').isString().notEmpty(),
     body('members').isArray({ min: 1 }),
     body('genre').isString().notEmpty(),
-    body('costToPerform').isFloat({ min: 0 }),
+    body('costToPerform')
+      .isFloat({ min: 0 })
+      .withMessage('Cost must be a number ≥ 0'),
+    body('costToPerform')
+      .isInt()
+      .withMessage('Cost must be an integer')    
   ],
   ctrl.createGroup
 );

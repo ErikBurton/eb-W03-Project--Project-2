@@ -1,0 +1,11 @@
+CSE 341 - W03 Project: Project 2 Part 2 GitHub OAuth with Passport & Express
+** DEMO **
+
+✅ GitHub OAuth with Passport
+✅ express-session for cookies
+✅ Protected routes via ensureAuth
+✅ Login & Logout demonstrated
+✅ Deployed securely on Render
+
+Erik Burton
+May 29, 2025
