@@ -1,60 +1,90 @@
-const express = require('express');
+const express       = require('express');
 const { body, param } = require('express-validator');
-const router = express.Router();
-const ctrl = require('../controllers/groupController');
-const ensureAuth = require('../ensureAuth');
+const router        = express.Router();
+const ctrl          = require('../controllers/groupController');
+const ensureAuth    = require('../ensureAuth');
 
 // Create
-// Datavalidation: express-validator checks on the incoming body fields.
 router.post(
-  '/', ensureAuth,
+  '/',
+  ensureAuth,
   [
-    body('name').isString().notEmpty().withMessage("Name is required and must be a non-empty string"),
+    body('name')
+      .isString()
+      .notEmpty()
+      .withMessage('Name is required and must be a non-empty string'),
 
-    body('members').isArray()
-    .withMessage("Members must be an array")
-    .bail() // stop if not an array
-    .custom(arr => Array.isArray(arr) && arr.length >=1)
-    .withMessage("Members array must contain at least one member"),
+    body('members')
+      .isArray()
+      .withMessage('Members must be an array')
+      .bail()
+      .custom(arr => Array.isArray(arr) && arr.length >= 1)
+      .withMessage('Members array must contain at least one member'),
 
+    body('genre')
+      .isString()
+      .notEmpty()
+      .withMessage('Genre is required and must be a non-empty string'),
 
-    body('genre').isString().notEmpty().withMessage("Genre is required and must be a non-empty string"),
-  
     body('costToPerform')
-      .isInt()
-      .withMessage("Cost must be an integer ≥ 0")    
+      .custom(value => {
+        return !isNaN(parseFloat(value)) && parseFloat(value) >= 0;
+      })
+      .withMessage('Cost must be a number ≥ 0')
+      .bail(),
+
+    body('costToPerform')
+      .isInt({ min: 0 })
+      .withMessage('Cost must be an integer ≥ 0')
   ],
   ctrl.createGroup
 );
 
 // GET all
-// No validation needed for listing all
 router.get('/', ctrl.getAllGroups);
 
 // GET one
-// Datavalidation: id must be a valid MongoDB OjbectID
 router.get(
   '/:id',
-  [ param('id', "Invalid Groud ID format").isMongoId() ],
+  [
+    param('id', 'Invalid Group ID format')
+      .isMongoId()
+  ],
   ctrl.getGroupById
 );
 
 // Update
-// Data Validation: id must be valid and optional body fields must follow their rules
 router.put(
-  '/:id', ensureAuth,
+  '/:id',
+  ensureAuth,
   [
-    param('id', "Invalid Groud ID format").isMongoId(),
-    body('costToPerform').optional().isFloat({ min: 0 }),
+    param('id', 'Invalid Group ID format')
+      .isMongoId(),
+
+    body('costToPerform')
+      .optional()
+      .custom(value => {
+        return !isNaN(parseFloat(value)) && parseFloat(value) >= 0;
+      })
+      .withMessage('Cost must be a number ≥ 0')
+      .bail(),
+
+    body('costToPerform')
+      .optional()
+      .isInt({ min: 0 })
+      .withMessage('Cost must be an integer ≥ 0')
   ],
   ctrl.updateGroup
 );
 
 // Delete
-// Data Validation: ensure id is well‐formed
 router.delete(
-  '/:id', ensureAuth,
-  [ param('id', "Invalid Groud ID format").isMongoId() ],
+  '/:id',
+  ensureAuth,
+  [
+    param('id', 'Invalid Group ID format')
+      .isMongoId()
+  ],
   ctrl.deleteGroup
 );
 
