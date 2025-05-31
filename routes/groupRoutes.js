@@ -35,7 +35,7 @@ router.get('/', ctrl.getAllGroups);
 // Datavalidation: id must be a valid MongoDB OjbectID
 router.get(
   '/:id',
-  [ param('id').isMongoId() ].withMessage("Invalid Groud ID format"),
+  [ param('id', "Invalid Groud ID format").isMongoId() ],
   ctrl.getGroupById
 );
 
@@ -44,8 +44,8 @@ router.get(
 router.put(
   '/:id', ensureAuth,
   [
-    param('id').isMongoId(),
-    body('costToPerform').optional().isFloat({ min: 0 }).withMessage("Invalid Groud ID format"),
+    param('id', "Invalid Groud ID format").isMongoId(),
+    body('costToPerform').optional().isFloat({ min: 0 }),
   ],
   ctrl.updateGroup
 );
@@ -54,7 +54,7 @@ router.put(
 // Data Validation: ensure id is well‐formed
 router.delete(
   '/:id', ensureAuth,
-  [ param('id').isMongoId() ].withMessage("Invalid Groud ID format"),
+  [ param('id', "Invalid Groud ID format").isMongoId() ],
   ctrl.deleteGroup
 );
 
