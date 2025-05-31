@@ -26,14 +26,13 @@ router.post(
       .notEmpty()
       .withMessage('Genre is required and must be a non-empty string'),
 
-    body('costToPerform')
+   body('costToPerform')
       .custom(value => {
+        // Must parse as a non‐negative float
         return !isNaN(parseFloat(value)) && parseFloat(value) >= 0;
       })
       .withMessage('Cost must be a number ≥ 0')
-      .bail(),
-
-    body('costToPerform')
+      .bail() // If that fails, stop here
       .isInt({ min: 0 })
       .withMessage('Cost must be an integer ≥ 0')
   ],
