@@ -31,9 +31,6 @@ router.post(
         return !isNaN(parseFloat(value)) && parseFloat(value) >= 0;
       })
       .withMessage('Cost must be a number ≥ 0')
-      .bail()
-      .isInt({ min: 0 })
-      .withMessage('Cost must be an integer ≥ 0'),
       ],
   ctrl.createGroup
 );
