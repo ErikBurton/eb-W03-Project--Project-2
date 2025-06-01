@@ -66,21 +66,41 @@ router.get(
 );
 
 // Update
-router.put(
-  '/:id',
-  ensureAuth,
-  [
-    param('id', 'Invalid Group ID format').isMongoId(),
+const updateValidators = [
+  // Validate “id” parameter first
+  param('id', 'Invalid Group ID format').isMongoId(),
 
-    body('costToPerform')
-      .optional()
-      .custom(value => {
-        return !isNaN(parseFloat(value)) && parseFloat(value) >= 0;
-      })
-      .withMessage('Cost must be a number ≥ 0')
-  ],
-  ctrl.updateGroup
-);
+  // If “name” appears in body, it must be a non-empty string
+  body('name')
+    .optional()
+    .isString().withMessage('Name must be a string')
+    .bail()
+    .notEmpty().withMessage('Name cannot be empty'),
+
+  // If “members” appears, it must be a non-empty array of at least one member
+  body('members')
+    .optional()
+    .isArray().withMessage('Members must be an array')
+    .bail()
+    .custom(arr => Array.isArray(arr) && arr.length >= 1)
+    .withMessage('Members array must contain at least one member')
+    .bail(),
+
+  // If “genre” appears, it must be a non-empty string
+  body('genre')
+    .optional()
+    .isString().withMessage('Genre must be a string')
+    .bail()
+    .notEmpty().withMessage('Genre cannot be empty'),
+
+  // If “costToPerform” appears, it must parse as a non-negative number
+  body('costToPerform')
+    .optional()
+    .custom(value => !isNaN(parseFloat(value)) && parseFloat(value) >= 0)
+    .withMessage('Cost must be a number ≥ 0')
+];
+
+console.log('🛡️ updateValidators =', updateValidators);
 
 // Delete
 router.delete(
