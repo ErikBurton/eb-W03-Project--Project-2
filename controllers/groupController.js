@@ -3,8 +3,11 @@ const Group = require('../models/Group');
 
 // Helper to send 400 on validation errors
 function checkValidation(req, res) {
+  console.log('\n>>> RAW REQUEST BODY:', JSON.stringify(req.body));
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log('>>> VALIDATION ERRORS:', errors.array());
     // Error Handling: respond with HTTP 400 and the array of validation errors
     return res.status(400).json({ errors: errors.array() });
   }
