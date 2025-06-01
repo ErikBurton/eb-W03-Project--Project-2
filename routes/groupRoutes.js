@@ -1,4 +1,4 @@
-// routes/groupRoutes.js
+console.log('🎬 groupRoutes.js loaded');
 const express         = require('express');
 const { body, param }   = require('express-validator');
 const router            = express.Router();
