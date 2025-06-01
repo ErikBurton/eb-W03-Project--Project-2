@@ -69,18 +69,56 @@ router.put(
   '/:id',
   ensureAuth,
   [
+    // 1) Always validate the :id path param
     param('id', 'Invalid Group ID format').isMongoId(),
 
+    // 2) If “name” is provided, it must be a non-empty string
+    body('name')
+      .optional()
+      .isString().withMessage('Name must be a string')
+      .bail()
+      .notEmpty().withMessage('Name cannot be empty'),
+
+    // 3) If “members” is provided, it must be a non-empty array of strings
     body('members')
       .optional()
       .isArray().withMessage('Members must be an array')
       .bail()
-      .custom(arr => arr.length >= 1).withMessage('Members array must contain at least one member'),
+      .custom(arr => Array.isArray(arr) && arr.length >= 1)
+      .withMessage('Members array must contain at least one member'),
 
+    // 4) If “genre” is provided, it must be a non-empty string
+    body('genre')
+      .optional()
+      .isString().withMessage('Genre must be a string')
+      .bail()
+      .notEmpty().withMessage('Genre cannot be empty'),
+
+    // 5) If “costToPerform” is provided, it must be a number ≥ 0
     body('costToPerform')
       .optional()
       .custom(v => !isNaN(parseFloat(v)) && parseFloat(v) >= 0)
-      .withMessage('Cost must be a number ≥ 0')
+      .withMessage('Cost must be a number ≥ 0'),
+
+    // 6) If “originCity” is provided, it must be a string (empty string allowed)
+    body('originCity')
+      .optional()
+      .isString().withMessage('OriginCity must be a string'),
+
+    // 7) If “activeSince” is provided, it must be a valid ISO date
+    body('activeSince')
+      .optional()
+      .isISO8601().withMessage('activeSince must be a valid ISO date (YYYY-MM-DD)'),
+
+    // 8) If “website” is provided, it must be a valid URL
+    body('website')
+      .optional()
+      .isURL().withMessage('Website must be a valid URL'),
+
+    // 9) If “albumsReleased” is provided, it must be an integer ≥ 0
+    body('albumsReleased')
+      .optional()
+      .isInt({ min: 0 }).withMessage('AlbumsReleased must be an integer ≥ 0')
   ],
   ctrl.updateGroup
 );
