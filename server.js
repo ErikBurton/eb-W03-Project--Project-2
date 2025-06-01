@@ -4,7 +4,6 @@ const cors    = require('cors');
 const path = require('path');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./docs/swagger.json');
-
 const session = require('express-session');
 const passport = require('./auth-github');
 
@@ -13,6 +12,7 @@ const performanceRoutes = require('./routes/performanceRoutes');
 
 const app = express();
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -58,7 +58,7 @@ app.get('/logout', (req, res, next) => {
   });
 });
 
-// Routes
+// API Routes
 app.use('/api/groups', groupRoutes);
 app.use('/api/performances', require('./routes/performanceRoutes'));
 
