@@ -62,12 +62,6 @@ router.put(
         return !isNaN(parseFloat(value)) && parseFloat(value) >= 0;
       })
       .withMessage('Cost must be a number ≥ 0')
-      .bail(),
-
-    body('costToPerform')
-      .optional()
-      .isInt({ min: 0 })
-      .withMessage('Cost must be an integer ≥ 0')
   ],
   ctrl.updateGroup
 );
